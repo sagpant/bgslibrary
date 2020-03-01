@@ -57,8 +57,13 @@ void MultiLayer::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat 
 
     if (status == MLBGS_DETECT)
       std::cout << algorithmName + " in DETECT mode" << std::endl;
-
+    
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+    IplImage _frame = cvIplImage(img_input);
+    org_img = &_frame;
+#else
     org_img = new IplImage(img_input);
+#endif
 
     fg_img = cvCreateImage(img_size, org_img->depth, org_img->nChannels);
     bg_img = cvCreateImage(img_size, org_img->depth, org_img->nChannels);
@@ -181,7 +186,12 @@ void MultiLayer::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat 
       std::cout << algorithmName + " enabled learning in DETECT mode" << std::endl;
   }
 
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+  IplImage _frame = cvIplImage(img_input);
+  IplImage* img = &_frame;
+#else
   IplImage* img = new IplImage(img_input);
+#endif
 
   BGS->SetRGBInputImage(img);
   BGS->Process();

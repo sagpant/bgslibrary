@@ -73,10 +73,24 @@ void FuzzyChoquetIntegral::process(const cv::Mat &img_input, cv::Mat &img_output
     cv::Mat img_background_f1;
     cv::cvtColor(img_background_f3, img_background_f1, CV_BGR2GRAY);
 
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+    IplImage _input_f3 = cvIplImage(img_input_f3);
+    IplImage* input_f3 = &_input_f3;
+
+    IplImage _input_f1 = cvIplImage(img_input_f1);
+    IplImage* input_f1 = &_input_f1;
+
+    IplImage _background_f3 = cvIplImage(img_background_f3);
+    IplImage* background_f3 = &_background_f3;
+
+    IplImage _background_f1 = cvIplImage(img_background_f1);
+    IplImage* background_f1 = &_background_f1;
+#else
     IplImage* input_f3 = new IplImage(img_input_f3);
     IplImage* input_f1 = new IplImage(img_input_f1);
     IplImage* background_f3 = new IplImage(img_background_f3);
     IplImage* background_f1 = new IplImage(img_background_f1);
+#endif
 
     IplImage* lbp_input_f1 = cvCreateImage(cvSize(input_f1->width, input_f1->height), IPL_DEPTH_32F, 1);
     cvSetZero(lbp_input_f1);

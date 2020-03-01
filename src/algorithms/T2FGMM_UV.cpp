@@ -20,7 +20,13 @@ T2FGMM_UV::~T2FGMM_UV() {
 void T2FGMM_UV::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bgmodel)
 {
   init(img_input, img_output, img_bgmodel);
+  
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+  IplImage _frame = cvIplImage(img_input);
+  frame = &_frame;
+#else
   frame = new IplImage(img_input);
+#endif
 
   if (firstTime)
     frame_data.ReleaseMemory(false);

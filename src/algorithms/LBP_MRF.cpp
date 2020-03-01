@@ -24,7 +24,12 @@ void LBP_MRF::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &im
 {
   init(img_input, img_output, img_bgmodel);
 
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+  IplImage TempImage = cvIplImage(img_input);
+#else
   IplImage TempImage(img_input);
+#endif
+
   lbp_mrf::MEImage InputImage(img_input.cols, img_input.rows, img_input.channels());
   lbp_mrf::MEImage OutputImage(img_input.cols, img_input.rows, img_input.channels());
 

@@ -1,13 +1,16 @@
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgproc.hpp>
+#include "opencv2/core/version.hpp"
+#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
 
 #include "MotionDetection.hpp"
-
-#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
 
 #include "graph.h"
 #include "MEHistogram.hpp"
 #include "MEImage.hpp"
+
+//#if CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9
+//#define CV_RGB(r, g, b) cvScalar((b), (g), (r), 0)
+//#endif
+#define CV_RGB_LEGACY(r, g, b) cvScalar((b), (g), (r), 0)
 
 namespace bgslibrary
 {
@@ -1354,20 +1357,20 @@ namespace bgslibrary
         {
         case sm_Circle:
           cvCircle(MaskImage, cvPoint(HUHistogramArea / 2, HUHistogramArea / 2),
-            CircleRadius, CV_RGB(1, 1, 1), -1);
+            CircleRadius, CV_RGB_LEGACY(1, 1, 1), -1);
           break;
 
         case sm_Square:
           cvRectangle(MaskImage,
             cvPoint(HUHistogramArea / 2 - SquareSide / 2, HUHistogramArea / 2 - SquareSide / 2),
             cvPoint(HUHistogramArea / 2 + SquareSide / 2, HUHistogramArea / 2 + SquareSide / 2),
-            CV_RGB(1, 1, 1), -1);
+            CV_RGB_LEGACY(1, 1, 1), -1);
           break;
 
         case sm_Ellipse:
           cvEllipse(MaskImage, cvPoint(HUHistogramArea / 2, HUHistogramArea / 2),
             cvSize(EllipseA, EllipseB), 45, 0, 360,
-            CV_RGB(1, 1, 1), -1);
+            CV_RGB_LEGACY(1, 1, 1), -1);
           break;
 
         case sm_RandomPixels:
@@ -1387,7 +1390,7 @@ namespace bgslibrary
 
         default:
           cvCircle(MaskImage, cvPoint(HUHistogramArea / 2, HUHistogramArea / 2),
-            (int)MERound(sqrt((float)DesiredArea / ME_PI_VALUE)), CV_RGB(1, 1, 1), -1);
+            (int)MERound(sqrt((float)DesiredArea / ME_PI_VALUE)), CV_RGB_LEGACY(1, 1, 1), -1);
           break;
         }
 

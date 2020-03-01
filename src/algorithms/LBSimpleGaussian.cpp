@@ -21,7 +21,12 @@ void LBSimpleGaussian::process(const cv::Mat &img_input, cv::Mat &img_output, cv
 {
   init(img_input, img_output, img_bgmodel);
 
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+  IplImage _frame = cvIplImage(img_input);
+  IplImage *frame = &_frame;
+#else
   IplImage *frame = new IplImage(img_input);
+#endif
 
   if (firstTime) {
     int w = cvGetSize(frame).width;

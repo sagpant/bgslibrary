@@ -19,7 +19,7 @@
 
 #include "../utils/ILoadSaveConfig.h"
 
-#ifndef CV_RGB
+#ifndef CV_RGB && CV_MAJOR_VERSION > 3
 #define CV_RGB(r, g, b) cv::Scalar((b), (g), (r), 0)
 #endif
 

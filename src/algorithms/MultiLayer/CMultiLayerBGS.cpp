@@ -1,3 +1,6 @@
+#include "opencv2/core/version.hpp"
+#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
+
 #include <ctime>
 #include <cstdlib>
 #include <cstdio>
@@ -6,11 +9,13 @@
 #include <cmath>
 #include <iostream>
 
-#include "opencv2/core/version.hpp"
-#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
-
 #include "CMultiLayerBGS.h"
 #include "OpenCvLegacyIncludes.h"
+
+//#if CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9
+//#define CV_RGB(r, g, b) cvScalar((b), (g), (r), 0)
+//#endif
+//#define CV_RGB_LEGACY(r, g, b) cvScalar((b), (g), (r), 0)
 
 using namespace bgslibrary::algorithms::multilayer;
 using namespace bgslibrary::algorithms::multilayer::blob;
@@ -1233,7 +1238,7 @@ void CMultiLayerBGS::GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar *laye
     rgb[0] = rgb[1] = rgb[2] = 0;
     int rgb_idx = 0;
     for (int l = 0; l < bg_layer_color_num; l++) {
-      bg_layer_colors[l] = CV_RGB(rgb[0], rgb[1], rgb[2]);
+      bg_layer_colors[l] = CV_RGB_LEGACY(rgb[0], rgb[1], rgb[2]);
       rgb[rgb_idx] += 200;
       rgb[rgb_idx] %= 255;
       rgb_idx++;

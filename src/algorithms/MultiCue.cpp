@@ -74,8 +74,14 @@ void MultiCue::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &i
   init(img_input, img_output, img_bgmodel);
 
   //--STep1: Background Modeling--//
-  //IplImage* frame = &IplImage(img_input);
+
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+  IplImage _frame = cvIplImage(img_input);
+  IplImage* frame = &_frame;
+#else
   IplImage* frame = new IplImage(img_input);
+#endif
+
   IplImage* result_image = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 3);
   cvSetZero(result_image);
   if (g_iFrameCount <= g_iTrainingPeriod) {
@@ -537,8 +543,14 @@ void MultiCue::GaussianFiltering(IplImage* frame, uchar*** aFilteredFrame) {
     cv::GaussianBlur(temp_img, temp_img, cv::Size(7, 7), dSigma);
 
     //Store results into aFilteredFrame[][][]
-    //IplImage* img = &IplImage(temp_img);
+    
+#if CV_MAJOR_VERSION > 3 || (CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9)
+    IplImage _img = cvIplImage(temp_img);
+    IplImage* img = &_img;
+#else
     IplImage* img = new IplImage(temp_img);
+#endif
+
     //int iWidthStep = img->widthStep;
 
     for (int i = 0; i < g_iRHeight; i++) {

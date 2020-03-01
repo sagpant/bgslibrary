@@ -1,5 +1,8 @@
 #pragma once
 
+#include "opencv2/core/version.hpp"
+#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
+
 /*
 Since the used fast cross bilateral filter codes can not be compiled under Windows,
 we don't use the bilateral filter to remove the noise in the foreground detection
@@ -18,10 +21,10 @@ step. If you compile it under Linux, please uncomment it.
 #include <cmath>
 #include <iostream>
 
-#include <opencv2/imgproc.hpp>
+//#include <opencv2/imgproc.hpp>
 
-#include "opencv2/core/version.hpp"
-#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
+// opencv legacy includes
+#include <opencv2/imgproc/imgproc_c.h>
 
 #include "LocalBinaryPattern.h"
 #include "BlobResult.h"
@@ -31,6 +34,8 @@ step. If you compile it under Linux, please uncomment it.
 #ifdef LINUX_BILATERAL_FILTER
 #include "CrossBilateralFilter.h"
 #endif
+
+#define CV_RGB_LEGACY(r, g, b) cvScalar((b), (g), (r), 0)
 
 namespace bgslibrary
 {
@@ -134,14 +139,14 @@ namespace bgslibrary
         void SetCurrentFrameNumber(unsigned long cur_frame_no);
 
         void GetForegroundMaskImage(IplImage *fg_mask_img);
-        void GetForegroundImage(IplImage *fg_img, CvScalar bg_color = CV_RGB(0, 255, 0));
+        void GetForegroundImage(IplImage *fg_img, CvScalar bg_color = CV_RGB_LEGACY(0, 255, 0));
         void GetBackgroundImage(IplImage *bk_img);
         void GetForegroundProbabilityImage(IplImage* fg_prob_img);
 
         void GetBgLayerNoImage(IplImage *bg_layer_no_img, CvScalar* layer_colors = NULL, int layer_num = 0);
-        void GetLayeredBackgroundImage(int layered_no, IplImage *layered_bg_img, CvScalar empty_color = CV_RGB(0, 0, 0));
+        void GetLayeredBackgroundImage(int layered_no, IplImage *layered_bg_img, CvScalar empty_color = CV_RGB_LEGACY(0, 0, 0));
         void GetCurrentLayeredBackgroundImage(int layered_no, IplImage *layered_bg_img, IplImage *layered_fg_img = NULL,
-          CvScalar layered_bg_bk_color = CV_RGB(0, 0, 0), CvScalar layered_fg_color = CV_RGB(255, 0, 0),
+          CvScalar layered_bg_bk_color = CV_RGB_LEGACY(0, 0, 0), CvScalar layered_fg_color = CV_RGB_LEGACY(255, 0, 0),
           int smooth_win = 13, float smooth_sigma = 3.0f, float below_layer_noise = 0.5f, float above_layer_noise = 0.3f, int min_blob_size = 50);
         float DistLBP(LBPStruct *LBP1, LBPStruct *LBP2);
         void GetColoredBgMultiLayeredImage(IplImage *bg_multi_layer_img, CvScalar *layer_colors);

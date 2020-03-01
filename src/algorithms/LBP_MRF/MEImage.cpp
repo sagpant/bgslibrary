@@ -1,12 +1,13 @@
-#include <opencv2/opencv.hpp>
-// opencv legacy includes
-#include <opencv2/imgproc/types_c.h>
-#include <opencv2/imgproc/imgproc_c.h>
+#include "opencv2/core/version.hpp"
+#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
 
 #include "MEImage.hpp"
 #include "MEDefs.hpp"
 
-#if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
+//#if CV_MAJOR_VERSION == 3 && CV_SUBMINOR_VERSION >= 9
+//#define CV_RGB(r, g, b) cvScalar((b), (g), (r), 0)
+//#endif
+#define CV_RGB_LEGACY(r, g, b) cvScalar((b), (g), (r), 0)
 
 //using namespace bgslibrary::algorithms::lbp_mrf;
 
@@ -1286,7 +1287,7 @@ namespace bgslibrary
             Point1.y = y - Resulty / 2;
             Point2.x = x + Resultx / 2;
             Point2.y = y + Resulty / 2;
-            cvLine(ME_CAST_TO_IPLIMAGE(cvImg), Point1, Point2, CV_RGB(255, 255, 255), 1, 8);
+            cvLine(ME_CAST_TO_IPLIMAGE(cvImg), Point1, Point2, CV_RGB_LEGACY(255, 255, 255), 1, 8);
           }
       }
 

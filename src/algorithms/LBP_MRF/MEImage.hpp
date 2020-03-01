@@ -3,6 +3,12 @@
 #include "opencv2/core/version.hpp"
 #if CV_MAJOR_VERSION >= 2 && CV_MAJOR_VERSION <= 3
 
+//#include <opencv2/opencv.hpp>
+//#include <opencv2/imgproc.hpp>
+
+// opencv legacy includes
+#include <opencv2/imgproc/imgproc_c.h>
+
 namespace bgslibrary
 {
   namespace algorithms
